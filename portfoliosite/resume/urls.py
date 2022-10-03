@@ -12,6 +12,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('projects', views.projects, name='projects'),
     path('resume', views.resume, name='resume'),
+    path('contact', views.contact, name='contact'),
 ]
 """
     Variable used to direct various urls to their appropriate views. 

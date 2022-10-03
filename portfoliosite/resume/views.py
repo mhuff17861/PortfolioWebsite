@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.db.models import F
 from .models import Project, Page_Header, CV_Category
+from .forms import ContactForm
 import logging
 
 logger = logging.getLogger(__name__)
@@ -87,3 +88,25 @@ def resume(request):
     }
 
     return render(request, 'resume/resume.html', context)
+
+def contact(request):
+    """
+    Returns the contact form if there is no post message, otherwise attempts to validate the response 
+    in the context of the ContactForm
+    """
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+
+        if form.is_valid():
+            return HttpResponseRedirect('/music/')
+    else:
+        form = ContactForm()
+
+    context = {
+        'form': form, 
+        'action': '/contact/',
+        'title': 'Contact Me',
+    }
+
+    return render(request, 'resume/generic_form.html', context)
+
