@@ -7,11 +7,17 @@ class ContactForm(forms.Form):
     """
     name = forms.CharField(label='Your name', max_length=100)
     """Variable which holds the name of the message sender"""
-    pronouns = forms.CharField(label='Pronouns (ex: they/them/their)', max_length=100, required=False)
+    pronouns = forms.CharField(label='Pronouns (optional)', max_length=100, required=False)
     """Variable which holds the message sender's pronouns (optional)"""
     email = forms.EmailField(label='Email', max_length=150)
     """Variable which holds the sender's email address"""
     reason_for_contact = forms.CharField(label='Reason for contacting me', max_length=50)
     """Variable which holds the sender's reason for contact"""
-    body = forms.CharField(label='Message', max_length=1000)
-    """Variable which holds the body of the sender's message"""
+    message = forms.CharField(label='Message', max_length=1000, widget=forms.Textarea)
+    """Variable which holds the sender's actual message"""
+
+
+    def __init__(self, *args, **kwargs):
+        super(ContactForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'

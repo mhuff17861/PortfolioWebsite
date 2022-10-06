@@ -2,8 +2,9 @@
     This file renders the proper template for each view in the resume app.
 """
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.db.models import F
+from django.urls import reverse
 from .models import Project, Page_Header, CV_Category
 from .forms import ContactForm
 import logging
@@ -98,15 +99,20 @@ def contact(request):
         form = ContactForm(request.POST)
 
         if form.is_valid():
-            return HttpResponseRedirect('/music/')
+            return HttpResponseRedirect(reverse('resume:thanks'))
     else:
         form = ContactForm()
 
     context = {
         'form': form, 
-        'action': '/contact/',
+        'action': reverse('resume:contact'),
         'title': 'Contact Me',
     }
 
     return render(request, 'resume/generic_form.html', context)
 
+def thanks(request):
+    """
+    Returns a thanks page
+    """
+    return render(request, 'resume/generic_thanks.html')
